@@ -1,0 +1,9 @@
+begin
+  R := 1;
+  I := 1;
+  while N > I or N = I do
+  begin
+    R := R * I;
+    I := I + 1
+  end
+end

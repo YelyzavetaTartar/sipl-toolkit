@@ -1,0 +1,61 @@
+?start: program
+
+program: BEGIN stmt END
+
+?stmt: stmt SEMI simple_stmt                         -> seq
+     | simple_stmt
+
+?simple_stmt: VAR ASSIGN aexp                        -> assign
+            | WHILE bexp DO simple_stmt              -> while_stmt
+            | IF bexp THEN simple_stmt ELSE simple_stmt -> if_stmt
+            | BEGIN stmt END                         -> block
+            | SKIP                                   -> skip
+
+?aexp: aexp PLUS term                                -> add
+     | aexp MINUS term                               -> sub
+     | term
+
+?term: term STAR factor                              -> mul
+     | factor
+
+?factor: LPAR aexp RPAR                              -> paren_aexp
+       | MINUS INT                                   -> neg_num
+       | INT                                         -> num
+       | VAR                                         -> var
+
+?bexp: bexp OR_OP bnot                               -> or_op
+     | bnot
+
+?bnot: NOT_OP bnot                                   -> not_op
+     | batom
+
+?batom: aexp EQ aexp                                 -> eq
+      | aexp GT aexp                                 -> gt
+      | LPAR bexp RPAR                               -> paren_bexp
+
+BEGIN: "begin"
+END: "end"
+IF: "if"
+THEN: "then"
+ELSE: "else"
+WHILE: "while"
+DO: "do"
+SKIP: "skip"
+
+OR_OP: "∨" | /\bor\b/
+NOT_OP: "¬" | /\bnot\b/
+
+ASSIGN: ":="
+SEMI: ";"
+PLUS: "+"
+MINUS: "-"
+STAR: "*"
+EQ: "="
+GT: ">"
+LPAR: "("
+RPAR: ")"
+
+INT: /[0-9]+/
+VAR: /(?!(?:begin|end|if|then|else|while|do|skip|or|not)\b)[A-Za-z_][A-Za-z0-9_]*/
+
+%ignore /[ \t\r\n]+/
