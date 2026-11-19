@@ -264,8 +264,10 @@ def render_svg(root: ParseTreeNode) -> str:
     svg_w = total_w + 2 * margin
     svg_h = max_y + margin
     parts = [
-        f'<svg xmlns="http://www.w3.org/2000/svg" width="{svg_w:.0f}" '
-        f'height="{svg_h:.0f}" viewBox="0 0 {svg_w:.0f} {svg_h:.0f}">',
+        (
+            f'<svg xmlns="http://www.w3.org/2000/svg" width="{svg_w:.0f}" '
+            f'height="{svg_h:.0f}" viewBox="0 0 {svg_w:.0f} {svg_h:.0f}">'
+        ),
         '<rect width="100%" height="100%" fill="#ffffff" />',
         *edges,
         *boxes,
